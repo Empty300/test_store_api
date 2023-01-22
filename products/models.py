@@ -186,4 +186,4 @@ class Reviews(models.Model):
     stars = models.PositiveSmallIntegerField(verbose_name='Оценка')
     created_timestamp = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     user = models.ForeignKey(to=User, on_delete=models.CASCADE, verbose_name='Пользователь')
-    product = models.ForeignKey(to=Product, on_delete=models.CASCADE, verbose_name='Продукт')
+    product = models.ForeignKey(to=Product, on_delete=models.CASCADE, verbose_name='Продукт', related_name='reviews')
