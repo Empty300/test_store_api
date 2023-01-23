@@ -12,12 +12,6 @@ class ProductsListSerializer(serializers.ModelSerializer):
                   'image1', 'brand')
 
 
-class ReviewCreateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Reviews
-        fields = ('__all__',)
-
-
 class ReviewSerializer(serializers.ModelSerializer):
     user = serializers.SlugRelatedField(slug_field='username', read_only=True)
 

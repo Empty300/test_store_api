@@ -5,9 +5,10 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from django_filters.rest_framework import DjangoFilterBackend
 
-from products.models import Product, Basket
-from products.serializers import ProductsListSerializer, ProductDetailSerializer, ReviewCreateSerializer, \
-    BasketSerializer
+from products.models import Product, Basket, Reviews
+from products.permissions import IsOwnerPermission
+from products.serializers import ProductsListSerializer, ProductDetailSerializer, \
+    BasketSerializer, ReviewSerializer
 from products.service import ProductFilter
 
 
@@ -28,14 +29,16 @@ class ProductDetailView(RetrieveAPIView):
     serializer_class = ProductDetailSerializer
 
 
-class ReviewCreateView(CreateAPIView):
-    serializer_class = ReviewCreateSerializer
+class ReviewModelViewSet(ModelViewSet):
+    queryset = Reviews.objects.all()
+    serializer_class = ReviewSerializer
+    permission_classes = (IsOwnerPermission,)
 
 
 class BasketModelViewSet(ModelViewSet):
     queryset = Basket.objects.all()
     serializer_class = BasketSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsOwnerPermission,)
     pagination_class = None
 
     def get_queryset(self):
@@ -53,4 +56,4 @@ class BasketModelViewSet(ModelViewSet):
             serializer = self.get_serializer(obj)
             return Response(serializer.data, status=status_code)
         except KeyError:
-            return Response({'product_id': 'Thi field is required.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'product_id': 'This field is required.'}, status=status.HTTP_400_BAD_REQUEST)
