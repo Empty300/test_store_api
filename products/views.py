@@ -1,12 +1,12 @@
 from rest_framework import status
-from rest_framework.generics import RetrieveAPIView, CreateAPIView
-from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.generics import RetrieveAPIView
+from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from django_filters.rest_framework import DjangoFilterBackend
 
 from products.models import Product, Basket, Reviews
-from products.permissions import IsOwnerPermission
+from products.permissions import IsOwnerPermission, IsOwnerOrGetPermission
 from products.serializers import ProductsListSerializer, ProductDetailSerializer, \
     BasketSerializer, ReviewSerializer
 from products.service import ProductFilter
@@ -20,7 +20,7 @@ class ProductsModelViewSet(ModelViewSet):
 
     def get_permissions(self):
         if self.action in ('create', 'update', 'destroy'):
-            self.permission_classes = (IsAdminUser)
+            self.permission_classes = (IsAdminUser,)
         return super(ProductsModelViewSet, self).get_permissions()
 
 
@@ -32,7 +32,16 @@ class ProductDetailView(RetrieveAPIView):
 class ReviewModelViewSet(ModelViewSet):
     queryset = Reviews.objects.all()
     serializer_class = ReviewSerializer
-    permission_classes = (IsOwnerPermission,)
+    permission_classes = (IsOwnerOrGetPermission,)
+
+    def create(self, request, *args, **kwargs):
+        try:
+            review = Reviews.objects.create(user=self.request.user, stars=request.data['stars'],
+                                            review=request.data['review'], product_id=request.data['product'])
+            serializer = self.get_serializer(review)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        except KeyError:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class BasketModelViewSet(ModelViewSet):

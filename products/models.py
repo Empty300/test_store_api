@@ -176,6 +176,7 @@ class Basket(models.Model):
             'sum': float(self.sum()),
         }
         return basket_item
+
     @classmethod
     def create_or_update(cls, product_id, user):
         baskets = Basket.objects.filter(user=user, product_id=product_id)

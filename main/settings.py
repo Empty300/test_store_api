@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-xmf6mmeomr52%i+)kt7v+w6g#x#y(zwa0tekdk8&u#6crx(!67'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -45,10 +45,12 @@ INSTALLED_APPS = [
     'main',
     'products',
     'users',
+    'orders',
 
     'rest_framework',
     'rest_framework.authtoken',
     'django_filters',
+    'djoser',
 ]
 
 MIDDLEWARE = [
@@ -154,4 +156,9 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ],
 
+}
+
+DJOSER = {
+    'ACTIVATION_URL': '#/activate/{uid}/{token}',
+    'SEND_ACTIVATION_EMAIL': False,
 }
