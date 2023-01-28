@@ -1,3 +1,3 @@
 [flake8]
-exclude = migrations, scraping.py, scrap_settings.py
+exclude = migrations, scraping.py, scrap_settings.py, venv
 max-line-length = 120
