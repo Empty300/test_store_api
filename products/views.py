@@ -1,14 +1,14 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
-from django_filters.rest_framework import DjangoFilterBackend
 
-from products.models import Product, Basket, Reviews
-from products.permissions import IsOwnerPermission, IsOwnerOrGetPermission
-from products.serializers import ProductsListSerializer, ProductDetailSerializer, \
-    BasketSerializer, ReviewSerializer
+from products.models import Basket, Product, Reviews
+from products.permissions import IsOwnerOrGetPermission, IsOwnerPermission
+from products.serializers import (BasketSerializer, ProductDetailSerializer,
+                                  ProductsListSerializer, ReviewSerializer)
 from products.service import ProductFilter
 
 

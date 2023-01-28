@@ -1,9 +1,9 @@
-from django.urls import path, include
+from django.urls import include, path
 from rest_framework import routers
 
 from orders.views import OrderModelViewSet
-from products.views import ProductDetailView, ProductsModelViewSet, BasketModelViewSet, \
-    ReviewModelViewSet
+from products.views import (BasketModelViewSet, ProductDetailView,
+                            ProductsModelViewSet, ReviewModelViewSet)
 
 app_name = 'products'
 
