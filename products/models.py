@@ -1,9 +1,6 @@
-# import stripe
 from django.db import models
 
 from users.models import User
-
-# stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 class ProductCategory(models.Model):
@@ -14,6 +11,9 @@ class ProductCategory(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name_plural = "Категории товаров"
 
 
 class Product(models.Model):
@@ -97,6 +97,9 @@ class Product(models.Model):
     )
     stripe_product_price_id = models.CharField(max_length=128, blank=True, null=True)
 
+    class Meta:
+        verbose_name_plural = "Товары"
+
     def sum(self):
         all_stars = list()
         all_reviews = Reviews.objects.all().filter(product=self.id)
@@ -110,22 +113,7 @@ class Product(models.Model):
     def __str__(self):
         return f'Продукт: {self.name} | Категория: {self.category.name}'
 
-    # def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
-    #     if not self.stripe_product_price_id:
-    #         stripe_product_price = self.create_stripe_product_price()
-    #         self.stripe_product_price_id = stripe_product_price['id']
-    #     super(Product, self).save(force_insert=False, force_update=False, using=None, update_fields=None)
 
-    # def create_stripe_product_price(self):
-    #     stripe_product = stripe.Product.create(name=self.name)
-    #     if self.price_now:
-    #         amount = round(self.price_now * 100)
-    #     else:
-    #         amount = round(self.price_old * 100)
-    #     stripe_product_price = stripe.Price.create(product=stripe_product['id'],
-    #                                                unit_amount=amount,
-    #                                                currency='rub')
-    #     return stripe_product_price
 
 
 class BasketQuerySet(models.QuerySet):
@@ -135,15 +123,7 @@ class BasketQuerySet(models.QuerySet):
     def total_quantity(self):
         return sum(basket.quantity for basket in self)
 
-    # def stripe_products(self):
-    #     line_items = []
-    #     for basket in self:
-    #         item = {
-    #             'price': basket.product.stripe_product_price_id,
-    #             'quantity': basket.quantity,
-    #         }
-    #         line_items.append(item)
-    #     return line_items
+
 
 
 class Basket(models.Model):
@@ -191,6 +171,9 @@ class Basket(models.Model):
             is_crated = False
             return basket, is_crated
 
+    class Meta:
+        verbose_name_plural = "Корзины"
+
 
 class Reviews(models.Model):
     review = models.CharField(
@@ -201,3 +184,6 @@ class Reviews(models.Model):
     created_timestamp = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     user = models.ForeignKey(to=User, on_delete=models.CASCADE, verbose_name='Пользователь')
     product = models.ForeignKey(to=Product, on_delete=models.CASCADE, verbose_name='Продукт', related_name='reviews')
+
+    class Meta:
+        verbose_name_plural = "Отзывы"

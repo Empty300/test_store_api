@@ -16,8 +16,8 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(Basket)
 class BasketAdmin(admin.ModelAdmin):
-    list_display = ('user', 'product', 'created_timestamp', 'quantity')
-    fields = ('user', 'product', 'created_timestamp', 'quantity')
+    list_display = ('user', 'product', 'created_timestamp')
+    fields = ('user', 'product', 'created_timestamp')
     readonly_fields = ['created_timestamp']
 
 
