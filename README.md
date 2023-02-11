@@ -15,7 +15,7 @@
 | DATABASES_HOST     | По умолчанию localhost                                     |
 | DATABASES_PORT  | По умолчанию 5432                                          |
 | SECRET_KEY | Django ключ                                                |
-                                           |
+                                         
 
 `.env` файл:
 ```bash
