@@ -6,11 +6,13 @@ from rest_framework.viewsets import ModelViewSet
 from orders.models import Order
 from orders.serializers import OrderListSerializer
 from products.models import Basket
+from products.service import PaginationMovies
 
 
 class OrderModelViewSet(ModelViewSet):
     serializer_class = OrderListSerializer
     queryset = Order.objects.all()
+    pagination_class = PaginationMovies
 
     def get_queryset(self):
         queryset = super(OrderModelViewSet, self).get_queryset()

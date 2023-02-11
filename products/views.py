@@ -9,7 +9,7 @@ from products.models import Basket, Product, Reviews
 from products.permissions import IsOwnerOrGetPermission, IsOwnerPermission
 from products.serializers import (BasketSerializer, ProductDetailSerializer,
                                   ProductsListSerializer, ReviewSerializer)
-from products.service import ProductFilter
+from products.service import ProductFilter, PaginationMovies
 
 
 class ProductsModelViewSet(ModelViewSet):
@@ -17,6 +17,7 @@ class ProductsModelViewSet(ModelViewSet):
     filter_backends = (DjangoFilterBackend,)
     filterset_class = ProductFilter
     queryset = Product.objects.all()
+    pagination_class = PaginationMovies
 
     def get_permissions(self):
         if self.action in ('create', 'update', 'destroy'):
@@ -33,6 +34,7 @@ class ReviewModelViewSet(ModelViewSet):
     queryset = Reviews.objects.all()
     serializer_class = ReviewSerializer
     permission_classes = (IsOwnerOrGetPermission,)
+    pagination_class = PaginationMovies
 
     def create(self, request, *args, **kwargs):
         try:
