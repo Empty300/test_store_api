@@ -38,7 +38,7 @@ class BasketSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Basket
-        fields = ('id', 'product', 'quantity', 'sum', 'total_sum', 'total_quantity', 'created_timestamp')
+        fields = ('id', 'user', 'product', 'quantity', 'sum', 'total_sum', 'total_quantity', 'created_timestamp')
         read_only_fields = ('created_timestamp',)
 
     def get_total_sum(self, obj):
